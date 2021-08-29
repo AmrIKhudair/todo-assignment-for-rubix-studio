@@ -1,21 +1,20 @@
 
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+import Grid from '@material-ui/core/Grid';
 import TodoCheckbox from './TodoCheckbox';
 
-function Todo({ todo }) {
+export default function Todo({ todo, onShow }) {
     
     return (
-        <TableRow>
-            <TodoCheckbox todo={todo} />
-            <TableCell align="left">
+        <Grid container item style={{alignItems: 'center'}}>
+            <Grid item>
+                <TodoCheckbox todo={todo} />
+            </Grid>
+            <Grid item xs onClick={() => onShow(todo.id)}>
                 {todo.title}
-            </TableCell>
-            <TableCell align="right">
+            </Grid>
+            <Grid item align="right">
                 {todo.dueDate}
-            </TableCell>
-        </TableRow>
+            </Grid>
+        </Grid>
     );
-}
-
-export default Todo;
+};

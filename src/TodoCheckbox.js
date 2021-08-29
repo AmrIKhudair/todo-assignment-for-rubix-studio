@@ -1,19 +1,12 @@
 import { useMutation } from '@apollo/client';
 import Checkbox from '@material-ui/core/Checkbox';
-import TableCell from '@material-ui/core/TableCell';
-import { UPDATE_TODO_COMPLETION } from './gql/mutations'
-import { LIST_TODOS } from './gql/queries';
+import { useSaveTodoMutation } from './gql/mutations'
 
-function TodoCheckbox({ todo }) {
-    const [setCompletion, {loading, error, data}] = useMutation(UPDATE_TODO_COMPLETION, { variables: { id: todo.id }, refetchQueries: [ LIST_TODOS ] })
-
-    if (error) window.alert(JSON.stringify(error));
+export default function TodoCheckbox({ todo }) {
+    const [saveTodo, {loading, error}] = useSaveTodoMutation(todo.id)
+    if (error) console.log(JSON.stringify(error));
 
     return (
-        <TableCell padding="checkbox" disabled={loading}>
-            <Checkbox checked={todo.is_completed} onClick={() => setCompletion({ variables: { value: !todo.is_completed } })} />
-        </TableCell>
+        <Checkbox checked={todo.isCompleted} disabled={loading} onClick={e => saveTodo({ variables: { data: { isCompleted: e.target.checked } } })} />
     )
-}
-
-export default TodoCheckbox
+};
